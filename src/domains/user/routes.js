@@ -1,14 +1,15 @@
 const express = require("express");
 const emailValidator = require("email-validator");
-const mongoose = require("mongoose");
 const User = require("./model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken"); 
 
 const router = new express.Router();
+const db = require("./model");
 
 require("dotenv").config();
 const {JWT_KEY} = process.env;
+
 
 // TODO: add another type of error
 router.post("/signup",(req,res) =>{
@@ -24,18 +25,12 @@ router.post("/signup",(req,res) =>{
         return res.status(400).json({message:"Invalid email address"});
     }
 
-    User.findOne({ $or: [{username:username}, {email:email}]  }).exec().then( result => {
-        if(result != null) throw new Error(result.username === username ? "Username already exists" : "Email already exists"); 
+    db.findUsernameOrEmail(username,email).then( users => {
+        if(users.length !== 0) throw new Error(users[0].username === username ? "Username already exists" : "Email already exists"); 
         return bcrypt.hash(password,10); 
 
     }).then(hashedPassword => {
-        const user = new User({
-            _id : new mongoose.Types.ObjectId(),
-            username: username,
-            password: hashedPassword,
-            email: email
-        });
-        return user.save();
+        return db.insertUser(username,email,hashedPassword);
 
     }).then( () => {
         return res.status(200).json({message:"Successfully signed up"});
@@ -56,18 +51,17 @@ router.post("/login",(req,res) =>{
         return res.status(400).json({message:"Some fields are empty"});
     }
 
-
-    User.findOne({username:username}).exec().then(user =>{
-        if(user == null) throw new Error("Authentication failed");
-        return bcrypt.compare(password,user.password).then( isValid => ({user,isValid}));
+   db.findUser(username).then(users =>{
+        if(users.length === 0) throw new Error("Authentication failed");
+        return bcrypt.compare(password,users[0].password).then( isValid => ({users ,isValid}) );
     
     }).then( result => {
-        const {user,isValid} = result;
+        const {users,isValid} = result;
 
         if( !isValid ) throw new Error("Authentication failed");
         
         return new Promise((resolve,reject) => {
-            jwt.sign({id:user._id},JWT_KEY,{expiresIn: "1h"}, (err,token) =>{
+            jwt.sign({id:users[0].id},JWT_KEY,{expiresIn: "1h"}, (err,token) =>{
                 if(err) reject(err);
                 else resolve(token);
             });

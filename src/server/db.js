@@ -1,20 +1,13 @@
 require("dotenv").config();
-const {MONGODB_URI} = process.env;
+const sqlite3 = require("sqlite3").verbose();
 
-const mongoose = require("mongoose");
-
-async function connectDB(){
-    try{
-        await mongoose.connect(MONGODB_URI,{});
-        console.log("Successfully connected to database");        
-    }
-    catch(err){
-        console.log("Database connection failed: " + err.message);
-    }
-}
-
-module.exports = connectDB;
+const { DATABASE_NAME } = process.env;
 
 
+db = new sqlite3.Database(DATABASE_NAME, (err) => {
+    if (!err) console.log("Successfully connected to the SQLite database");
+    else console.log("Error while opening the database: " + err.message); 
+});
+    
 
-
+module.exports = db;
