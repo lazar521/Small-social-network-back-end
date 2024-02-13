@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
 async function connectDB(){
     try{
         await mongoose.connect(MONGODB_URI,{});
-        console.log("\nSuccessfully connected to database");        
+        console.log("Successfully connected to database");        
     }
     catch(err){
-        console.log("\nDatabase connection failed: " + err.message);
+        console.log("Database connection failed: " + err.message);
     }
 }
 
