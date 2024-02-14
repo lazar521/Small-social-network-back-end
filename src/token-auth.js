@@ -8,9 +8,9 @@ const {JWT_KEY} = process.env;
 
 module.exports = (req,res,next) => {
     try{
-        const decoded = jwt.verify(req.headers.autorization, JWT_KEY);
+        const decoded = jwt.verify(req.headers.authorization, JWT_KEY);
         req.userData = decoded;
-        next();
+        next(decoded);
     }
     catch(err){
         return res.status(401).json({message: "You are not logged in"})

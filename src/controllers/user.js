@@ -2,7 +2,7 @@ const emailValidator = require("email-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken"); 
 
-const userModel = require("../models/user");
+const Users = require("../models/user");
 const { Sequelize } = require("sequelize");
 
 require("dotenv").config();
@@ -22,7 +22,7 @@ exports.signUp = (req,res,next) => {
         return res.status(400).json({message:"Invalid email address"});
     }
 
-    userModel.findOne({
+    Users.findOne({
         where: {
             [Sequelize.Op.or]: 
             [{username},{email}]
@@ -34,7 +34,7 @@ exports.signUp = (req,res,next) => {
         return bcrypt.hash(password,10); 
 
     }).then(hashedPassword => {
-        return userModel.create({username, email ,password:hashedPassword});
+        return Users.create({username, email ,password:hashedPassword});
 
     }).then( () => {
         return res.status(201).json({message:"Successfully signed up"});
@@ -53,15 +53,20 @@ exports.login = (req,res,next) => {
         return res.status(400).json({message:"Some fields are empty"});
     }
 
-    userModel.findByPk(username).then(user =>{
+    let id;
+    Users.findOne({
+        where:{username}
+   
+    }).then(user =>{
         if(user == null) throw new Error("Authentication failed");
+        id = user.id;
         return bcrypt.compare(password,user.password);
     
     }).then( isValid => {
         if( !isValid ) throw new Error("Authentication failed");
         
         return new Promise((resolve,reject) => {
-            jwt.sign({username},JWT_KEY,{expiresIn: "1h"}, (err,token) =>{
+            jwt.sign({username,id},JWT_KEY,{expiresIn: "1h"}, (err,token) =>{
                 if(err) reject(err);
                 else resolve(token);
             });
@@ -71,7 +76,6 @@ exports.login = (req,res,next) => {
         return res.status(200).json({
             message:"Successfully logged in",
             token: token,
-            username: username
         });
 
     }).catch(err => {
