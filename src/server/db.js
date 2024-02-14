@@ -1,13 +1,24 @@
 require("dotenv").config();
-const sqlite3 = require("sqlite3").verbose();
+const { Sequelize } = require('sequelize');
 
 const { DATABASE_NAME } = process.env;
 
-
-db = new sqlite3.Database(DATABASE_NAME, (err) => {
-    if (!err) console.log("Successfully connected to the SQLite database");
-    else console.log("Error while opening the database: " + err.message); 
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: DATABASE_NAME,
+  logging: false
 });
-    
 
-module.exports = db;
+
+module.exports = sequelize;
+
+// Import models to ensure they are registered
+require("../models/user"); 
+require("../models/connection");
+require("../models/post");
+
+(async () => {
+    await sequelize.sync();
+    console.log("Database synchronized");
+})();
+

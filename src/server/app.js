@@ -17,7 +17,7 @@ app.use((err, req, res, next) => {
 });
 
 
-const router = require("../routes/routes");
+const router = require("./routes");
 app.use("/api",router);
 
 
