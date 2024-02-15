@@ -15,7 +15,7 @@ Here's what the CLI looks like:
 Your friend list:
 ---- Darko
 ---- John
-_________________________________________________
+_________________________________`________________
 [logged as Jack] enter command: feed
 
                Your Feed
@@ -58,4 +58,4 @@ python ./main.py
 
 The client application provides a small menu with 'help' option.
 
-
+#### NOTE: You can modify the 'backend/.env' and 'client/config.py' to change the port that the server will be using.
