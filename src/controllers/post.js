@@ -1,6 +1,5 @@
 const sequelize = require("sequelize");
 const Posts = require("../models/post");
-const Connections = require("../models/connection");
 const Users = require("../models/user");
 
 exports.publishPost = (decodedToken,req,res,next) => {
@@ -32,7 +31,7 @@ exports.getFeed = (decodedToken,req,res,next) => {
 
         return Posts.findAll({
             where: { userId: { [sequelize.Op.in]: friendIds } },
-            attributes: ["contents"],
+            attributes: ["contents","createdAt"],
             include: [{ model: Users, as: 'User', attributes: ["username"]  }],
             order: [['createdAt', 'DESC']] 
         });
