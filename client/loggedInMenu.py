@@ -1,29 +1,29 @@
 import requests
+from config import PORT
 
 horizontalLine = "_________________________________________________"
 
 helpMessage = """
 Available commands:
-- list       => List your friends
+- list       => Lists your friends
 - add        => Adds a friend
-- remove     => Remove a friend
-- post       => Make a post
+- remove     => Removes a friend
+- post       => Makes a post
 - feed       => Shows your feed (Posts made by users that you follow)
 - logout     => Logs you out of your account
 """
 
 
-def loggedIn(sessionToken):
+def loggedIn(username,sessionToken):
     running = True
 
-    print(horizontalLine)
     print(helpMessage)
-    print("Type 'help' to see available commands again")
+    print("Type 'help' to see available commands for logged in users")
 
     requestHeaders = {'Content-Type': 'application/json', 'Authorization':sessionToken}
 
     while running:
-        print("enter command: ",end = "")
+        print("[logged as " + username +"] enter command: ",end = "")
         words = input().split()
         
         if len(words) != 1:
@@ -65,7 +65,7 @@ def loggedIn(sessionToken):
 def listFriends(headers):
     reqBody = {}
 
-    response = requests.get(url="http://localhost:5000/api/connection/list",headers=headers,json=reqBody)
+    response = requests.get(url="http://localhost:" + PORT + "/api/connection/list",headers=headers,json=reqBody)
     resBody = response.json()
 
     print("\nYour friend list:")
@@ -80,7 +80,7 @@ def addFriend(headers):
     print("\nWho do you want to add: ",end="")
     reqBody["friendName"] = input()
 
-    response = requests.post(url="http://localhost:5000/api/connection/add",headers=headers,json=reqBody)
+    response = requests.post(url="http://localhost:" + PORT + "/api/connection/add",headers=headers,json=reqBody)
 
     resBody = response.json()
 
@@ -98,7 +98,7 @@ def removeFriend(headers):
     print("\nWho do you want to remove: ",end="")
     reqBody["friendName"] = input()
 
-    response = requests.post(url="http://localhost:5000/api/connection/remove",headers=headers,json=reqBody)
+    response = requests.post(url="http://localhost:" + PORT + "/api/connection/remove",headers=headers,json=reqBody)
 
     resBody = response.json()
 
@@ -116,7 +116,7 @@ def makePost(headers):
     print("\nWhat do you wish to post: ",end="")
     reqBody["contents"] = input()
 
-    response = requests.post(url="http://localhost:5000/api/post/publish",headers=headers,json=reqBody)
+    response = requests.post(url="http://localhost:" + PORT + "/api/post/publish",headers=headers,json=reqBody)
     resBody = response.json()
 
     if response.status_code >= 400:
@@ -128,7 +128,7 @@ def makePost(headers):
 
 
 def showFeed(headers):
-    response = requests.get(url="http://localhost:5000/api/post/feed",headers=headers)
+    response = requests.get(url="http://localhost:" + PORT + "/api/post/feed",headers=headers)
     resBody = response.json()
     
     if response.status_code >= 400:
