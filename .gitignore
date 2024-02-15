@@ -1,4 +1,5 @@
-.env
-node_modules
-.vscode
-social_network.db
+backend/.env
+backend/node_modules
+backend/.vscode
+backend/social_network.db
+client/__pycache__
