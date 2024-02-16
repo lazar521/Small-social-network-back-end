@@ -1,21 +1,40 @@
-# Introduction
+# Overview
 
 
-A small social network with a simple REST API backend that allows users to signup, login, add/remove friends and make posts. A user can see all of their friends' posts in their feed. Friends' posts are ordered by the time of creation.
+A small social network with a simple REST API backend that allows users to signup, login, add/remove friends and make posts. A user can see all of their friends' posts in their feed ordered by the time of post's creation. The backend uses an integrated **SQLite** database with **Sequelize** ORM library.
 <br> 
-I've also included a small CLI application written in Python to test the backend.
 
+I've also included a small **client CLI application** written in Python to test the backend.
+
+<br>
+The API endpoints:
+
+```
+- /api/user/signup          ==> User signup
+- /api/user/login           ==> User login
+
+- /api/connection/add       ==> Add friend 
+- /api/connection/remove    ==> Remove friend
+- /api/connection/list      ==> List friends
+
+- /api/post/publish         ==> Make a post
+- /api/post/feed            ==> List of posts made by friends
+```
+
+
+#### NOTE: The backend is relatively simplistic and it performs some, but not every possible security check.
+It doesn't check the payload size, for example.
 
 ## Example
 
-Here's what the CLI looks like:
+Here's what the client CLI looks like:
 ```
 [logged as Jack] enter command: list
 
 Your friend list:
 ---- Darko
 ---- John
-_________________________________`________________
+_________________________________________________
 [logged as Jack] enter command: feed
 
                Your Feed
