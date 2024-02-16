@@ -1,7 +1,7 @@
 # Overview
 
 
-A small social network with a simple REST API backend that allows users to signup, login, add/remove friends and make posts. A user can see all of their friends' posts in their feed ordered by the time of post's creation. The backend uses an integrated **SQLite** database with **Sequelize** ORM library.
+A small social network with a simple REST API backend written in **Node.js**, that allows users to signup, login, add/remove friends and make posts. A user can see all of their friends' posts in their feed ordered by the time of post's creation. The backend uses an integrated **SQLite** database with **Sequelize** ORM library.
 <br> 
 
 I've also included a small **client CLI application** written in Python to test the backend.
