@@ -1,10 +1,10 @@
 # Overview
 
 
-A small social network with a simple REST API backend written in **Node.js**, that allows users to signup, login, add/remove friends and make posts. A user can see all of their friends' posts in their feed ordered by the time of post's creation. Friendships don't have to be bidirectional, they work more like a following. The backend uses an integrated **SQLite** database with **Sequelize** ORM library.
+A small social network with a simple REST API back end written in **Node.js**, that allows users to signup, login, add/remove friends and make posts. A user can see all of their friends' posts in their feed ordered by the time of post's creation. Friendships don't have to be bidirectional, they work more like a following. The back end uses an integrated **SQLite** database with **Sequelize** ORM library.
 <br> 
 
-I've also included a small **client CLI application** written in Python to test the backend.
+I've also included a small **client CLI application** written in Python to test the back end.
 
 <br>
 The API endpoints:
@@ -22,7 +22,7 @@ The API endpoints:
 ```
 
 
-#### NOTE: The backend is relatively simplistic and it performs some, but not every possible security check.
+#### NOTE: The back end is relatively simplistic and it performs some, but not every possible security check.
 It doesn't check the payload size, for example.
 
 ## Example
@@ -44,7 +44,7 @@ The CLI too
 
 
 2024-02-15   16:50   John
-The backend works great
+The back end works great
 
 
 _________________________________________________
@@ -55,7 +55,7 @@ _________________________________________________
 ## Testing
 
 
-#### NOTE: You have to have Node.js intalled to run the backend. 
+#### NOTE: You have to have Node.js intalled to run the back end. 
 
 <br>
 If you wish to run and test the API yourself, first you have to start the server by running this command from the 'backend' folder.
